@@ -1,0 +1,24 @@
+#editor,
+#preview {
+    width: 45%;
+    height: 90vh;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#editor {
+    overflow: auto;
+}
+
+#preview {
+    overflow: auto;
+}
+
+
+.main-title {
+    text-align: center;
+    margin-top: 10px;
+}
