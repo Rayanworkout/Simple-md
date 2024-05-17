@@ -21,7 +21,7 @@ fn index() -> Template {
     Template::render("index", json!({}))
 }
 
-// Using vanilla JS fetch
+// Endpoint if we were using vanilla JS fetch
 // #[post("/convert", format = "application/json", data = "<data>")]
 // fn convert_md_to_html(data: Json<Markdown>) -> String {
 //     let html = comrak::markdown_to_html(&data.markdown, &comrak::ComrakOptions::default());
