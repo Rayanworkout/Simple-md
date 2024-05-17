@@ -7,13 +7,6 @@
     border: 1px solid #ccc;
     display: inline-block;
     vertical-align: top;
-}
-
-#editor {
-    overflow: auto;
-}
-
-#preview {
     overflow: auto;
 }
 
