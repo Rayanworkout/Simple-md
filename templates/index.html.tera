@@ -11,7 +11,8 @@
 <body>
     <h1 class="main-title">Simple Markdown</h1>
     <div class="container">
-        <div id="editor" contenteditable="true"></div>
+        <textarea id="editor"></textarea>
+        <!-- <div id="editor" contenteditable="true"></div> -->
         <div id="preview"></div>
     </div>
     <script src="/js/index.js"></script>
