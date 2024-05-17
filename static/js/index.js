@@ -2,9 +2,11 @@
 const preview = document.querySelector('#preview');
 const inputField = document.querySelector('#editor');
 
-inputField.addEventListener('input', () => {
-    debounceInput(2000);
-});
+// These functions are not used since we use HTMX
+
+// inputField.addEventListener('input', () => {
+//     debounceInput(2000);
+// });
 
 const convertMarkdown = async (data) => {
     try {
