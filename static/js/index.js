@@ -23,6 +23,7 @@ function createNewCell(notebook) {
     const newtextArea = document.createElement('textarea');
     newtextArea.classList.add('cell');
     newtextArea.name = 'markdown-content';
+    newtextArea.maxLength = 2500;
     notebook.appendChild(newtextArea);
     newtextArea.focus();
 }
