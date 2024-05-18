@@ -1,50 +1,19 @@
+document.addEventListener('DOMContentLoaded', (_) => {
+    const notebook = document.getElementById('notebook');
 
-const preview = document.querySelector('#preview');
-const inputField = document.querySelector('#editor');
-
-// These functions are not used since we use HTMX
-
-// inputField.addEventListener('input', () => {
-//     debounceInput(2000);
-// });
-
-const convertMarkdown = async (data) => {
-    try {
-        const response = await fetch('/convert', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ markdown: data })
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+    notebook.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && event.ctrlKey) {
+            event.preventDefault();
+            event.target.classList.add('hidden')
+            createNewCell();
         }
-        return await response.text();
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
-    };
-}
+    });
 
-const updatePreview = async () => {
-    try {
-
-        const html = await convertMarkdown(inputField.value);
-        preview.innerHTML = html;
-    } catch (error) {
-        console.error('Error updating preview:', error);
+    function createNewCell() {
+        const newCell = document.createElement('div');
+        newCell.classList.add('cell');
+        newCell.contentEditable = 'true';
+        notebook.appendChild(newCell);
+        newCell.focus();
     }
-}
-
-let debounceTimer;
-
-const debounceInput = (delay) => {
-    clearTimeout(debounceTimer);
-
-    debounceTimer = setTimeout(async () => {
-        updatePreview();
-
-    }, delay);
-};
+});

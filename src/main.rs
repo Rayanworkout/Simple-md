@@ -9,12 +9,11 @@ use serde_json::json;
 #[allow(unused_imports)]
 use rocket::serde::{json::Json, Deserialize};
 
-#[allow(dead_code)]
-#[derive(Deserialize)]
-#[serde(crate = "rocket::serde")]
-struct Markdown {
-    markdown: String,
-}
+// #[derive(Deserialize)]
+// #[serde(crate = "rocket::serde")]
+// struct Markdown {
+//     markdown: String,
+// }
 
 #[get("/")]
 fn index() -> Template {
@@ -40,7 +39,7 @@ fn convert_md_to_html(data: String) -> String {
     let decoded_data = raw_str.url_decode().unwrap();
     let html = comrak::markdown_to_html(&decoded_data, &comrak::ComrakOptions::default());
 
-    html
+    format!("<div>{html}</div>")
 }
 
 #[launch]
