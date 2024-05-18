@@ -39,7 +39,7 @@ fn convert_md_to_html(data: String) -> String {
     let decoded_data = raw_str.url_decode().unwrap();
     let html = comrak::markdown_to_html(&decoded_data, &comrak::ComrakOptions::default());
 
-    format!("<div class=\"cell\">{html}</div>")
+    format!("<div class=\"cell md-html\">{html}</div>")
 }
 
 #[launch]

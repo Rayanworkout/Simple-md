@@ -13,7 +13,7 @@
 <body>
     <h1 class="text-center my-3">Simple Markdown</h1>
     <div class="notebook py-4 px-2">
-        <textarea name="markdown-content" class="cell" maxlength="2500"></textarea>
+        <textarea id="cell-1" name="markdown-content" class="cell md-html" maxlength="2500"></textarea>
     </div>
 
     <script src="https://unpkg.com/htmx.org@1.9.12"
