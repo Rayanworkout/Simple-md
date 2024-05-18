@@ -33,14 +33,13 @@ fn index() -> Template {
     data = "<data>"
 )]
 fn convert_md_to_html(data: String) -> String {
-    // println!("DATA: {}", data);
     let content = data.split("=").collect::<Vec<&str>>()[1];
     let raw_str: &RawStr = content.into();
 
     let decoded_data = raw_str.url_decode().unwrap();
     let html = comrak::markdown_to_html(&decoded_data, &comrak::ComrakOptions::default());
 
-    format!("<div>{html}</div>")
+    format!("<div class=\"cell\">{html}</div>")
 }
 
 #[launch]
