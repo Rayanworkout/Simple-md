@@ -9,22 +9,28 @@ document.addEventListener('DOMContentLoaded', (_) => {
         }
     });
 
-    const textarea = document.querySelector('#markdown-content');
+    const textarea = document.querySelector('.cell');
 
-    // Dynamically resize textarea
-    textarea.addEventListener('input', function () {
+    // Dynamically resize first textarea
+    textarea.addEventListener('input', () => {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     });
 });
 
 
-function createNewCell(notebook) {
+const createNewCell = (notebook) => {
     const newtextArea = document.createElement('textarea');
     newtextArea.classList.add('cell');
     newtextArea.name = 'markdown-content';
     newtextArea.maxLength = 2500;
     notebook.appendChild(newtextArea);
     newtextArea.focus();
+
+    // Dynamically resize textarea
+    newtextArea.addEventListener('input', () => {
+        newtextArea.style.height = 'auto';
+        newtextArea.style.height = newtextArea.scrollHeight + 'px';
+    });
 }
 
