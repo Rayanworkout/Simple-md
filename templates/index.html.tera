@@ -11,10 +11,10 @@
 <body>
     <h1 class="main-title">Simple Markdown</h1>
     <div id="notebook">
-        <textarea class="cell" hx-post="/convert" name="markdown" hx-trigger="input delay:1000ms"
-            hx-target="next"></textarea>
-        <div></div>
+        <textarea class="cell" name="markdown" hx-post="/convert" hx-trigger="keyup[ctrlKey&&key=='Enter'] from:body"
+            hx-swap="outerHTML"></textarea>
     </div>
+
     <script src="https://unpkg.com/htmx.org@1.9.12"
         integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
         crossorigin="anonymous"></script>

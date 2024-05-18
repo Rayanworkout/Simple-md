@@ -32,7 +32,7 @@ body {
     margin: 20px auto;
 }
 
-.cell {
+.cell, textarea {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;

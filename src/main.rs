@@ -33,6 +33,7 @@ fn index() -> Template {
     data = "<data>"
 )]
 fn convert_md_to_html(data: String) -> String {
+    // println!("DATA: {}", data);
     let content = data.split("=").collect::<Vec<&str>>()[1];
     let raw_str: &RawStr = content.into();
 
