@@ -33,7 +33,7 @@ fn index() -> Template {
     data = "<data>"
 )]
 fn convert_md_to_html(data: String) -> String {
-    let content = data.split("=").collect::<Vec<&str>>()[1];
+    let content = data.split("markdown-content=").collect::<Vec<&str>>()[1];
     let raw_str: &RawStr = content.into();
 
     let decoded_data = raw_str.url_decode().unwrap();

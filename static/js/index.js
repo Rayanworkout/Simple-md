@@ -1,8 +1,8 @@
 const notebookContent = {};
 
 document.addEventListener('DOMContentLoaded', (_) => {
-
     const notebook = document.querySelector('.notebook');
+    let currentId = 0;
 
     // If user types Ctrl + Enter, send the content of the textarea to the server
     notebook.addEventListener('keydown', (event) => {
@@ -10,25 +10,32 @@ document.addEventListener('DOMContentLoaded', (_) => {
             event.preventDefault();
 
             // We add the content of the textarea to the notebookContent object
-            notebookContent[event.target.id] = event.target.value;
+            notebookContent[currentId + 1] = event.target.value;
+            currentId++;
 
             // We issue a POST request to the server
-            htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target })
+            htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
 
             // We create a new cell
             createNewCell(notebook);
 
-            // Add event listnener to all cells "md-html" class
+            // Add event listener to all cells "md-html" class
             // if user double clicks, we retrieve the value in markdown format
-            const cells = document.querySelectorAll('.md-html');
-            cells.forEach((cell) => {
-                console.log(cell);
-                cell.addEventListener('click', (event) => {
-                    const cellId = event.target.id;
-                    const markdownContent = notebookContent[cellId];
-                    console.log(markdownContent);
-                })
-            });
+            setTimeout(() => {
+                const cells = document.querySelectorAll('.md-html');
+                console.log(notebookContent);
+                let counter = 1;
+                cells.forEach((cell) => {
+                    // We assign an id to each cell depending on the order they were created
+                    cell.id = counter;
+                    cell.addEventListener('click', (event) => {
+                        const markdownContent = notebookContent[counter];
+                        console.log(markdownContent);
+                    });
+                    counter++;
+                });
+            }, 500);
+
         }
     });
 
@@ -48,10 +55,6 @@ const createNewCell = (notebook) => {
     newtextArea.maxLength = 2500;
     newtextArea.placeholder = 'Type here...';
 
-    // Assign a random id to the new textarea
-    randomId = Math.floor(Math.random() * 10000) + 1;
-    newtextArea.id = `cell-${randomId}`;
-
     notebook.appendChild(newtextArea);
     newtextArea.focus();
 
@@ -60,5 +63,4 @@ const createNewCell = (notebook) => {
         newtextArea.style.height = 'auto';
         newtextArea.style.height = newtextArea.scrollHeight + 'px';
     });
-
 }
