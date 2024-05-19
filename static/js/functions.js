@@ -10,7 +10,9 @@ const createNewCell = (notebook) => {
     newtextArea.id = "cell-" + currentId.toString();
 
     newtextArea.maxLength = 2500;
-    newtextArea.placeholder = 'Type here...';
+    if (currentId == 1) {
+        newtextArea.placeholder = 'Nice, you can also edit or delete a rendered cell using the 2 buttons at its top right 😇';
+    }
 
     notebook.appendChild(newtextArea);
     newtextArea.focus();
@@ -70,3 +72,9 @@ const updateCounter = (notebookContent) => {
     newCounter.textContent = `Characters: ${sumOfLength} | Words: ${wordCount}`;
     counterDiv.replaceWith(newCounter);
 };
+
+const refresh = () => {
+    if (confirm("You're gonna lose all your work. Are you sure?")) {
+        location.reload();
+    }
+}

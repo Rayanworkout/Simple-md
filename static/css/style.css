@@ -45,6 +45,7 @@ i {
     color: #333;
 }
 
-.counter {
-    padding-right: 200px;
+.counter, .download-icons {
+    padding-right: 150px;
+    margin: 10px;
 }

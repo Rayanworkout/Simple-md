@@ -1,9 +1,6 @@
 const notebookContent = {};
 let currentId = 0;
 
-// reset, download html, download markdown
-// char counter, delete cell
-
 document.addEventListener('DOMContentLoaded', (_) => {
     const notebook = document.querySelector('.notebook');
 

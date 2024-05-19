@@ -15,8 +15,17 @@
 <body>
     <h1 class="text-center my-3">Simple Markdown</h1>
     <div class="counter text-end">Characters: 0 | Words: 0</div>
+    <div class="download-icons text-end">
+        <i class="bi bi-download" style="margin-right: 10px;"></i>
+        <i class="bi bi-trash" onclick="refresh()"></i>
+    </div>
     <div class="notebook py-4 px-2">
-        <textarea id="cell-0" name="markdown-content" class="cell" maxlength="2500"></textarea>
+        <textarea id="cell-0" name="markdown-content" class="cell" maxlength="2500" placeholder="Welcome, Simple Markdown is a simple notebook style editor allowing you to preview some markdown text 🙂
+
+Once you typed your text, hit Ctrl + Enter to render the markdown and create a new cell.
+Each cell is limited to 2500 characters, but you can create as many cells as you want.
+
+If you're not sure about the markdown syntax, check markdownguide.org/basic-syntax/"></textarea>
     </div>
 
     <script src="https://unpkg.com/htmx.org@1.9.12"
