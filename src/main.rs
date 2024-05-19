@@ -46,8 +46,8 @@ fn convert_md_to_html(data: &str, ctype: &str, id: u32) -> String {
             "<div>
                 
                 <div class=\"panel-container\">
-                    <i class=\"bi bi-pencil-square edit md-html\" onclick=\"editCell(this.id)\" id=\"{id}\"></i>
-                    <i class=\"bi bi-x-circle delete md-html\" onclick=\"deleteCell(this.id)\" id=\"{id}\"></i>
+                    <i class=\"bi bi-pencil-square edit md-html\" onclick=\"editCell(this.id)\" id=\"cell-{id}\"></i>
+                    <i class=\"bi bi-x-circle delete md-html\" onclick=\"deleteCell(this.id)\" id=\"cell-{id}\"></i>
                 </div>
                 
                 <div class=\"cell md-html\" id=\"cell-{id}\">{html}</div>

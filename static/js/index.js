@@ -26,6 +26,15 @@ document.addEventListener('DOMContentLoaded', (_) => {
                     bareId = event.target.id.split('-')[1];
                     htmx.ajax('POST', `/convert/old/${bareId}`, { target: event.target, swap: 'outerHTML', source: event.target });
                 }
+
+                // Add an event listener to each cell
+                // So a double click will allow the user to edit the cell
+                const cells = document.querySelectorAll('.md-html');
+                cells.forEach((cell) => {
+                    cell.addEventListener('dblclick', () => {
+                        editCell(cell.id);
+                    });
+                });
             }
         }
     });
@@ -67,19 +76,25 @@ const createNewCell = (notebook) => {
 
 const editCell = (id) => {
     // Make the cell a textarea again
-    const fullId = `cell-${id}`;
-    const markdown = notebookContent[fullId];
+    const markdown = notebookContent[id];
     const textarea = document.createElement('textarea');
 
     textarea.classList.add('cell');
     textarea.name = 'markdown-content';
-    textarea.id = fullId;
+    textarea.id = id;
     textarea.maxLength = 2500;
     textarea.value = markdown;
     textarea.style.marginTop = '10px';
     textarea.style.marginBottom = '10px';
 
-    const cell = document.querySelector(`#${fullId}.cell`);
+    const cell = document.querySelector(`#${id}.cell`);
     cell.replaceWith(textarea);
     textarea.focus();
 };
+
+const deleteCell = (id) => {
+    const cellAndButtons = document.querySelectorAll(`#${id}`);
+    cellAndButtons.forEach((element) => {
+        element.remove();
+    });
+}
