@@ -10,10 +10,15 @@ document.addEventListener('DOMContentLoaded', (_) => {
             event.preventDefault();
 
             // We create a new cell
-            createNewCell(notebook);
+            if (event.target.id === currentId.toString() && event.target.value !== '') {
+                createNewCell(notebook);
 
-            // We issue a POST request to the server
-            htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
+                // We issue a POST request to the server
+                htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
+            } else if (event.target.id !== currentId.toString() && event.target.value !== '') {
+                htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
+            }
+
 
             setTimeout(() => {
                 const cells = document.querySelectorAll('.md-html');
@@ -25,7 +30,7 @@ document.addEventListener('DOMContentLoaded', (_) => {
                 });
             }, 500);
 
-            notebook.addEventListener('click', (event) => {
+            notebook.addEventListener('dblclick', (event) => {
                 // Add event listener to all cells "md-html" class
                 // if user double clicks, we retrieve the value in markdown format
                 if (event.target.classList.contains('md-html')) {
