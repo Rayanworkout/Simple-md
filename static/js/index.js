@@ -1,42 +1,58 @@
 const notebookContent = {};
+let currentId = 0;
 
 document.addEventListener('DOMContentLoaded', (_) => {
     const notebook = document.querySelector('.notebook');
-    let currentId = 0;
 
     // If user types Ctrl + Enter, send the content of the textarea to the server
     notebook.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && event.ctrlKey) {
             event.preventDefault();
 
-            // We add the content of the textarea to the notebookContent object
-            notebookContent[currentId + 1] = event.target.value;
-            currentId++;
+            // We create a new cell
+            createNewCell(notebook);
 
             // We issue a POST request to the server
             htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
 
-            // We create a new cell
-            createNewCell(notebook);
-
-            // Add event listener to all cells "md-html" class
-            // if user double clicks, we retrieve the value in markdown format
             setTimeout(() => {
                 const cells = document.querySelectorAll('.md-html');
-                console.log(notebookContent);
-                let counter = 1;
+                let counter = 0;
                 cells.forEach((cell) => {
                     // We assign an id to each cell depending on the order they were created
                     cell.id = counter;
-                    cell.addEventListener('click', (event) => {
-                        const markdownContent = notebookContent[counter];
-                        console.log(markdownContent);
-                    });
                     counter++;
                 });
             }, 500);
 
+            notebook.addEventListener('click', (event) => {
+                // Add event listener to all cells "md-html" class
+                // if user double clicks, we retrieve the value in markdown format
+                if (event.target.classList.contains('md-html')) {
+                    const id = event.target.id;
+                    const markdown = notebookContent[id];
+
+                    // Make the cell a textarea again
+                    const textarea = document.createElement('textarea');
+                    textarea.classList.add('cell');
+                    textarea.name = 'markdown-content';
+                    textarea.id = id;
+                    textarea.maxLength = 2500;
+                    textarea.value = markdown;
+                    textarea.style.marginTop = '10px';
+                    textarea.style.marginBottom = '10px';
+
+                    event.target.replaceWith(textarea);
+                }
+            });
+
         }
+    });
+
+    // Modify the notebookContent object when the user types in a cell, using debouncing
+    notebook.addEventListener('input', (event) => {
+        const id = event.target.id;
+        notebookContent[id] = event.target.value;
     });
 
     // Dynamically resize first textarea
@@ -52,6 +68,10 @@ const createNewCell = (notebook) => {
     const newtextArea = document.createElement('textarea');
     newtextArea.classList.add('cell');
     newtextArea.name = 'markdown-content';
+
+    newtextArea.id = currentId + 1;
+    currentId++;
+
     newtextArea.maxLength = 2500;
     newtextArea.placeholder = 'Type here...';
 
