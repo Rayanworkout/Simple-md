@@ -17,14 +17,30 @@ body {
     width: 90%;
     height: 90%;
     padding: 10px;
-    margin-bottom: 10px;
     min-height: 200px;
     border-radius: 8px;
     resize: none;
     margin: 0 auto;
     display: block;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
 }
 
 .cell:focus {
     outline: none;
+}
+
+.panel-container {
+    display: flex;
+    justify-content: end;
+    gap: 15px;
+    align-items: center;
+    margin: 15px;
+    padding-right: 55px;
+}
+
+i {
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
 }

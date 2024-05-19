@@ -1,6 +1,9 @@
 const notebookContent = {};
 let currentId = 0;
 
+// reset, download html, download markdown
+// char counter, delete cell
+
 document.addEventListener('DOMContentLoaded', (_) => {
     const notebook = document.querySelector('.notebook');
 
@@ -10,51 +13,24 @@ document.addEventListener('DOMContentLoaded', (_) => {
             event.preventDefault();
 
             // We create a new cell
-            if (event.target.id === currentId.toString() && event.target.value !== '') {
-                createNewCell(notebook);
+            if (event.target.value !== '') {
+                if (event.target.id === "cell-" + currentId.toString()) {
+                    // We issue a POST request to the server
+                    htmx.ajax('POST', `/convert/new/${currentId}`, { target: event.target, swap: 'outerHTML', source: event.target });
+                    currentId++;
 
-                // We issue a POST request to the server
-                htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
-            } else if (event.target.id !== currentId.toString() && event.target.value !== '') {
-                htmx.ajax('POST', '/convert', { target: event.target, swap: 'outerHTML', source: event.target });
-            }
+                    // And create a new cell underneath
+                    createNewCell(notebook);
 
-
-            setTimeout(() => {
-                const cells = document.querySelectorAll('.md-html');
-                let counter = 0;
-                cells.forEach((cell) => {
-                    // We assign an id to each cell depending on the order they were created
-                    cell.id = counter;
-                    counter++;
-                });
-            }, 500);
-
-            notebook.addEventListener('dblclick', (event) => {
-                // Add event listener to all cells "md-html" class
-                // if user double clicks, we retrieve the value in markdown format
-                if (event.target.classList.contains('md-html')) {
-                    const id = event.target.id;
-                    const markdown = notebookContent[id];
-
-                    // Make the cell a textarea again
-                    const textarea = document.createElement('textarea');
-                    textarea.classList.add('cell');
-                    textarea.name = 'markdown-content';
-                    textarea.id = id;
-                    textarea.maxLength = 2500;
-                    textarea.value = markdown;
-                    textarea.style.marginTop = '10px';
-                    textarea.style.marginBottom = '10px';
-
-                    event.target.replaceWith(textarea);
+                } else if (event.target.id !== "cell-" + currentId.toString()) {
+                    bareId = event.target.id.split('-')[1];
+                    htmx.ajax('POST', `/convert/old/${bareId}`, { target: event.target, swap: 'outerHTML', source: event.target });
                 }
-            });
-
+            }
         }
     });
 
-    // Modify the notebookContent object when the user types in a cell, using debouncing
+    // Modify the notebookContent object when the user types in a cell
     notebook.addEventListener('input', (event) => {
         const id = event.target.id;
         notebookContent[id] = event.target.value;
@@ -74,8 +50,7 @@ const createNewCell = (notebook) => {
     newtextArea.classList.add('cell');
     newtextArea.name = 'markdown-content';
 
-    newtextArea.id = currentId + 1;
-    currentId++;
+    newtextArea.id = "cell-" + currentId.toString();
 
     newtextArea.maxLength = 2500;
     newtextArea.placeholder = 'Type here...';
@@ -89,3 +64,22 @@ const createNewCell = (notebook) => {
         newtextArea.style.height = newtextArea.scrollHeight + 'px';
     });
 }
+
+const editCell = (id) => {
+    // Make the cell a textarea again
+    const fullId = `cell-${id}`;
+    const markdown = notebookContent[fullId];
+    const textarea = document.createElement('textarea');
+
+    textarea.classList.add('cell');
+    textarea.name = 'markdown-content';
+    textarea.id = fullId;
+    textarea.maxLength = 2500;
+    textarea.value = markdown;
+    textarea.style.marginTop = '10px';
+    textarea.style.marginBottom = '10px';
+
+    const cell = document.querySelector(`#${fullId}.cell`);
+    cell.replaceWith(textarea);
+    textarea.focus();
+};
