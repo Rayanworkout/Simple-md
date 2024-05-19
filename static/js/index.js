@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', (_) => {
             event.preventDefault();
 
             // We create a new cell
-            if (event.target.value !== '') {
+            if (event.target.value.trim() !== '') {
                 if (event.target.id === "cell-" + currentId.toString()) {
                     // We issue a POST request to the server
                     htmx.ajax('POST', `/convert/new/${currentId}`, { target: event.target, swap: 'outerHTML', source: event.target });
@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', (_) => {
                 } else if (event.target.id !== "cell-" + currentId.toString()) {
                     bareId = event.target.id.split('-')[1];
                     htmx.ajax('POST', `/convert/old/${bareId}`, { target: event.target, swap: 'outerHTML', source: event.target });
+
+                    // Show the edit button
+                    const editButton = document.querySelector(`#${event.target.id}.edit`);
+                    editButton.style.display = 'block';
                 }
 
                 // Add an event listener to each cell
@@ -75,6 +79,9 @@ const createNewCell = (notebook) => {
 }
 
 const editCell = (id) => {
+    // Hide the edit button
+    const editButton = document.querySelector(`#${id}.edit`);
+    editButton.style.display = 'none';
     // Make the cell a textarea again
     const markdown = notebookContent[id];
     const textarea = document.createElement('textarea');
