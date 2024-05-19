@@ -30,15 +30,6 @@ document.addEventListener('DOMContentLoaded', (_) => {
                     const editButton = document.querySelector(`#${event.target.id}.edit`);
                     editButton.style.display = 'block';
                 }
-
-                // Add an event listener to each cell
-                // So a double click will allow the user to edit the cell
-                const cells = document.querySelectorAll('.md-html');
-                cells.forEach((cell) => {
-                    cell.addEventListener('dblclick', () => {
-                        editCell(cell.id);
-                    });
-                });
             }
         }
     });
@@ -47,6 +38,9 @@ document.addEventListener('DOMContentLoaded', (_) => {
     notebook.addEventListener('input', (event) => {
         const id = event.target.id;
         notebookContent[id] = event.target.value;
+
+        // Showing the user the number of characters in the textarea and in the whole notebook
+        updateCounter(notebookContent);
     });
 
     // Dynamically resize first textarea
@@ -56,52 +50,3 @@ document.addEventListener('DOMContentLoaded', (_) => {
         textarea.style.height = textarea.scrollHeight + 'px';
     });
 });
-
-
-const createNewCell = (notebook) => {
-    const newtextArea = document.createElement('textarea');
-    newtextArea.classList.add('cell');
-    newtextArea.name = 'markdown-content';
-
-    newtextArea.id = "cell-" + currentId.toString();
-
-    newtextArea.maxLength = 2500;
-    newtextArea.placeholder = 'Type here...';
-
-    notebook.appendChild(newtextArea);
-    newtextArea.focus();
-
-    // Dynamically resize textarea
-    newtextArea.addEventListener('input', () => {
-        newtextArea.style.height = 'auto';
-        newtextArea.style.height = newtextArea.scrollHeight + 'px';
-    });
-}
-
-const editCell = (id) => {
-    // Hide the edit button
-    const editButton = document.querySelector(`#${id}.edit`);
-    editButton.style.display = 'none';
-    // Make the cell a textarea again
-    const markdown = notebookContent[id];
-    const textarea = document.createElement('textarea');
-
-    textarea.classList.add('cell');
-    textarea.name = 'markdown-content';
-    textarea.id = id;
-    textarea.maxLength = 2500;
-    textarea.value = markdown;
-    textarea.style.marginTop = '10px';
-    textarea.style.marginBottom = '10px';
-
-    const cell = document.querySelector(`#${id}.cell`);
-    cell.replaceWith(textarea);
-    textarea.focus();
-};
-
-const deleteCell = (id) => {
-    const cellAndButtons = document.querySelectorAll(`#${id}`);
-    cellAndButtons.forEach((element) => {
-        element.remove();
-    });
-}

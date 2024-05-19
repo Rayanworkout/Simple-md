@@ -14,6 +14,7 @@
 
 <body>
     <h1 class="text-center my-3">Simple Markdown</h1>
+    <div class="counter text-end">Characters: 0 | Words: 0</div>
     <div class="notebook py-4 px-2">
         <textarea id="cell-0" name="markdown-content" class="cell" maxlength="2500"></textarea>
     </div>
@@ -21,6 +22,7 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"
         integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
         crossorigin="anonymous"></script>
+    <script src="/js/functions.js"></script>
     <script src="/js/index.js"></script>
 
 </body>
