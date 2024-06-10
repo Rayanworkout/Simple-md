@@ -62,6 +62,7 @@ const updateCounter = (notebookContent) => {
 
     const values = Object.values(notebookContent); // array with all values
     const wordCount = values.map((text) => text.split(' ').length); // An array with the number of words in each text
+    const reducedWordCount = wordCount.reduce((count, next) => count + next, 0); // The sum of all words in the object
     const valuesLength = values.map((text) => text.length); // An array with the length of each text
     const sumOfLength = valuesLength.reduce((count, next) => count + next, 0); // The sum of all chars in the object
 
@@ -69,7 +70,7 @@ const updateCounter = (notebookContent) => {
     const newCounter = document.createElement('div');
     newCounter.classList.add('counter', 'text-end');
 
-    newCounter.textContent = `Characters: ${sumOfLength} | Words: ${wordCount}`;
+    newCounter.textContent = `Characters: ${sumOfLength} | Words: ${reducedWordCount}`;
     counterDiv.replaceWith(newCounter);
 };
 
