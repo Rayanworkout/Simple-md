@@ -6,26 +6,10 @@ use rocket::http::RawStr;
 use rocket_dyn_templates::Template;
 use serde_json::json;
 
-#[allow(unused_imports)]
-use rocket::serde::{json::Json, Deserialize};
-
-// #[derive(Deserialize)]
-// #[serde(crate = "rocket::serde")]
-// struct Markdown {
-//     markdown: String,
-// }
-
 #[get("/")]
 fn index() -> Template {
     Template::render("index", json!({}))
 }
-
-// Endpoint if we were using vanilla JS fetch
-// #[post("/convert", format = "application/json", data = "<data>")]
-// fn convert_md_to_html(data: Json<Markdown>) -> String {
-//     let html = comrak::markdown_to_html(&data.markdown, &comrak::ComrakOptions::default());
-//     html
-// }
 
 #[post(
     "/convert/<ctype>/<id>",
@@ -67,6 +51,7 @@ fn convert_md_to_html(data: &str, ctype: &str, id: u32) -> String {
 
 #[launch]
 fn rocket() -> _ {
+
     rocket::build()
         .mount("/", routes![index, convert_md_to_html])
         .attach(Template::fairing())
