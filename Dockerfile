@@ -1,3 +1,5 @@
+# docker run -d -p 8080:8080 simple-md
+
 FROM docker.io/rust:1-slim-bookworm AS build
 
 ## cargo package name: customize here or provide via --build-arg

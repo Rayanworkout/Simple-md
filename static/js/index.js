@@ -46,4 +46,17 @@ document.addEventListener('DOMContentLoaded', (_) => {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     });
+
+    // Allow user to download the notebook content in a md file
+    const downloadButton = document.querySelector('.bi-download');
+    downloadButton.addEventListener('click', () => {
+        const content = Object.values(notebookContent).join('\n\n');
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'notebook.md';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
 });
