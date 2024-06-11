@@ -56,6 +56,9 @@ const deleteCell = (id) => {
     cellAndButtons.forEach((element) => {
         element.remove();
     });
+
+    // Delete the cell from the notebookContent object
+    delete notebookContent[id];
 }
 
 const updateCounter = (notebookContent) => {
