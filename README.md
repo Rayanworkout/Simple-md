@@ -24,7 +24,7 @@ Clone the repository, `cd` into it and run the following commands:
 
 ```bash
 docker build -t simple-md  .
-docker run -d -p 8080:8080 -v /path/to/docs:/app/docs simple-md
+docker run -d -p 8080:8080 -v ./docs:/app/docs simple-md
 ```
 
 You can then access the app at `http://localhost:8080`
