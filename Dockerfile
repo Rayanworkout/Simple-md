@@ -1,8 +1,8 @@
-# docker run -d -p 8080:8080 simple-md
+# docker build -t simple-md  .
+# docker run -d -p 8080:8080 -v ./docs:/app/docs simple-md
 
 FROM docker.io/rust:1-slim-bookworm AS build
 
-## cargo package name: customize here or provide via --build-arg
 ARG pkg=simple-md
 
 WORKDIR /build
@@ -25,10 +25,12 @@ WORKDIR /app
 ## copy the main binary
 COPY --from=build /build/main ./
 
-## copy runtime assets which may or may not exist
+## copy runtime assets which may or  may not exist
 COPY --from=build /build/Rocket.tom[l] ./static
 COPY --from=build /build/stati[c] ./static
 COPY --from=build /build/template[s] ./templates
+
+EXPOSE 8080
 
 ## ensure the container listens globally on port 8080
 ENV ROCKET_ADDRESS=0.0.0.0

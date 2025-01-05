@@ -46,16 +46,43 @@ document.addEventListener('DOMContentLoaded', (_) => {
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     });
+    
+
 
     // Allow user to download the notebook content in a md file
     const downloadButton = document.querySelector('.bi-download');
     downloadButton.addEventListener('click', () => {
+
+        // Check if notebook is empty
+        if (Object.keys(notebookContent).length === 0) {
+            return;
+        }
+
+        const saveOnServer = document.querySelector('#toggleSave').checked;
+        let filename = document.querySelector('#filename').value;
+
+        // Check if filename already has the .md extension
+        if (filename.endsWith('.md')) {
+            filename = filename.slice(0, -3);
+        }
+
+        if (filename == '') {
+            // Generate a random filename if the user didn't provide one
+            filename = Math.random().toString(36).substring(7); 
+        }
+
         const content = Object.values(notebookContent).join('\n\n');
+
+        if (saveOnServer) {
+            sendToServerForDownload(content, filename + '.md');
+            return;
+        }
+
         const blob = new Blob([content], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'notebook.md';
+        a.download = filename + '.md';
         a.click();
         URL.revokeObjectURL(url);
     });

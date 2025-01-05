@@ -11,7 +11,7 @@ const createNewCell = (notebook) => {
 
     newtextArea.maxLength = 2500;
     if (currentId == 1) {
-        newtextArea.placeholder = 'Nice, you can also edit or delete a rendered cell using the 2 buttons at its top right 😇';
+        newtextArea.placeholder = 'Nice ! you can also edit or delete a rendered cell using the 2 buttons at its top right 😇\n\nBe careful, because the delete button of a cell won\'t ask twice before deleting it ...';
     }
 
     notebook.appendChild(newtextArea);
@@ -60,6 +60,44 @@ const deleteCell = (id) => {
     // Delete the cell from the notebookContent object
     delete notebookContent[id];
 }
+
+/// Toggle button to save either on server or in browser
+const toggleSaveButton = (e) => {
+    const toggleSwitch = e.target;
+    const toggleText = document.getElementById('toggleText');
+
+    if (toggleSwitch.checked) {
+        // Switch to "Save on server"
+        toggleText.textContent = 'Save on server';
+    } else {
+        // Switch to "Save in browser"
+        toggleText.textContent = 'Save in browser';
+    }
+};
+
+/// Function to make a POST request to the server with the markdown content
+const sendToServerForDownload = (content, filename) => {
+    // Send the content to the server via an HTTP POST request
+    fetch('/save-markdown', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content, filename }),
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('File successfully saved on the server.');
+        } else {
+            alert('Could not save file on the server.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving content to the server.');
+    });
+}
+
 
 const updateCounter = (notebookContent) => {
 
